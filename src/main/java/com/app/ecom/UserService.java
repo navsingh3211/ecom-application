@@ -10,6 +10,7 @@ import java.util.Optional;
 public class UserService {
     private List<User> userList = new ArrayList<>();
     private Long nextId = 1L;
+
     public List<User> fetchAllUsers(){
         return userList;
     }
@@ -29,5 +30,15 @@ public class UserService {
         return userList.stream()
                 .filter(user->user.getId().equals(id))
                 .findFirst();
+    }
+    public boolean updateUser(Long id,User updateUser){
+        return userList.stream()
+                .filter(u->u.getId().equals(id))
+                .findFirst()
+                .map(existingUser->{
+                    existingUser.setFirstName(updateUser.getFirstName());
+                    existingUser.setLastName(updateUser.getLastName());
+                    return true;
+                }).orElse(false);
     }
 }
