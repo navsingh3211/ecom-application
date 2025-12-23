@@ -73,7 +73,7 @@ public class UserService {
             addressDTO.setCity(user.getAddress().getCity());
             addressDTO.setState(user.getAddress().getState());
             addressDTO.setCountry(user.getAddress().getCountry());
-            addressDTO.setCity(user.getAddress().getCity());
+            addressDTO.setZipcode(user.getAddress().getZipcode());
             userResponse.setAddress(addressDTO);
         }
         return userResponse;
