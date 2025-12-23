@@ -1,8 +1,11 @@
 #spring.application.name=ecom-application
-#
-##Database config
+
 #spring.h2.console.enabled=true
 #spring.datasource.url=jdbc:h2:mem:test
+#spring.jpa.show-sql=true #enable logging of sql in console
+
+#for test purpose for prod use update #automaticalyy create database table based on your entity classes
+#spring.jpa.hibernate.ddl-auto=create
 
 spring:
   application:
@@ -12,3 +15,7 @@ spring:
       enabled: true
   datasource:
     url: jdbc:h2:mem:test
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
