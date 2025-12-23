@@ -1,7 +1,9 @@
 package com.app.ecom.service;
 
 import com.app.ecom.dto.AddressDTO;
+import com.app.ecom.dto.UserRequest;
 import com.app.ecom.dto.UserResponse;
+import com.app.ecom.model.Address;
 import com.app.ecom.repository.UserRepository;
 import com.app.ecom.model.User;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,9 @@ public class UserService {
                 .map(this::mapToUserResponse)
                 .collect(Collectors.toList());
     }
-    public void addUser(User user){
+    public void addUser(UserRequest userRequest){
+        User user = new User();
+        updateUserFromRequest(user,userRequest);
         userRepository.save(user);
     }
 
@@ -30,14 +34,29 @@ public class UserService {
         return userRepository.findById(id)
                 .map(this::mapToUserResponse);
     }
-    public boolean updateUser(Long id,User updateUser){
+    public boolean updateUser(Long id,UserRequest userRequest ){
         return userRepository.findById(id)
                 .map(existingUser->{
-                    existingUser.setFirstName(updateUser.getFirstName());
-                    existingUser.setLastName(updateUser.getLastName());
+                    updateUserFromRequest(existingUser,userRequest);
                     userRepository.save(existingUser);
                     return true;
                 }).orElse(false);
+    }
+
+    private void updateUserFromRequest(User user, UserRequest userRequest) {
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+        user.setEmail(userRequest.getEmail());
+        user.setPhone(userRequest.getPhone());
+        if(userRequest.getAddress()!=null){
+            Address address = new Address();
+            address.setStreet(userRequest.getAddress().getStreet());
+            address.setCity(userRequest.getAddress().getCity());
+            address.setState(userRequest.getAddress().getState());
+            address.setCountry(userRequest.getAddress().getCountry());
+            address.setZipcode(userRequest.getAddress().getZipcode());
+            user.setAddress(address);
+        }
     }
 
     private UserResponse mapToUserResponse(User user){
